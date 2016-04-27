@@ -1,0 +1,198 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #F6FBFF;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: normal;
+}
+
+#start-table {
+    margin:auto;
+    margin-top: 200px;
+}
+
+#start-table td {
+    padding: 20px 0;
+}
+
+#question-table {
+    margin:auto;
+    margin-top: 5px;
+    display: none;
+    width: 600px;
+}
+
+#question-table .sbl-answer {
+    border: 2px solid #ddd;
+    height: 50px;
+    line-height: 15px;
+    background-color: #fff;
+}
+
+.centered {
+    text-align: center;
+}
+
+input[@type="button"] {
+    min-width: 100px;
+    min-height: 30px;
+}
+
+#sbtn-begin {
+    height: 60px;
+    min-width: 150px;
+}
+
+#block-question {
+    height: 150px;
+    font-size: 12pt;
+}
+
+#block-answers {
+    font-size: 10pt;
+}
+
+.wrong {
+    border: 2px solid #f00 !important;
+    background-color: #fdd !important;
+}
+
+.right {
+    border: 2px solid #0f0 !important;
+    background-color: #dfd !important;
+}
+
+.selected {
+    border: 2px solid #aa0 !important;
+    background-color: #ff3 !important;
+}
+
+.block-arrows {
+    margin-top: 30px;
+}
+
+
+.block-arrows .arrow {
+    width: 100px;
+    height: 60px;
+}
+
+.block-stats {
+    font-size: 9pt;
+}
+
+
+.block-stats > b {
+    display: inline-block;
+    margin: 10px;
+    padding: 5px;
+}
+
+.sbtn-answer {
+    width: 100px;
+    height: 60px;
+    float: right;
+    background-
+}
+
+.sbtn-iforgot {
+    width: 100px;
+    height: 60px;
+    float: left;
+
+}
+
+.peter-river-flat-button {
+  position: relative;
+  vertical-align: top;
+  padding: 0;
+  font-size: 11pt;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: #3498db;
+  border: 0;
+  border-bottom: 2px solid #2a8bcc;
+  cursor: pointer;
+  -webkit-box-shadow: inset 0 -2px #2a8bcc;
+  box-shadow: inset 0 -2px #2a8bcc;
+}
+.peter-river-flat-button:active {
+  top: 1px;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.concrete-flat-button {
+  position: relative;
+  vertical-align: top;
+  padding: 0;
+  font-size: 11pt;
+  color:white;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: #859596;
+  border: 0;
+  border-bottom: 2px solid #95a5a6;
+  cursor: pointer;
+  -webkit-box-shadow: inset 0 -2px #95a5a6;
+  box-shadow: inset 0 -2px #95a5a6;
+}
+.concrete-flat-button:active {
+  top: 1px;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.amethyst-flat-button {
+  position: relative;
+  vertical-align: top;
+  padding: 0;
+  font-size: 11pt;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: #9b59b6;
+  border: 0;
+  border-bottom: 2px solid #8d4ca7;
+  cursor: pointer;
+  -webkit-box-shadow: inset 0 -2px #8d4ca7;
+  box-shadow: inset 0 -2px #8d4ca7;
+}
+.amethyst-flat-button:active {
+  top: 1px;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.belize-hole-flat-button {
+  position: relative;
+  vertical-align: top;
+  padding: 0;
+  font-size: 11pt;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: #2980b9;
+  border: 0;
+  border-bottom: 2px solid #2475ab;
+  cursor: pointer;
+  -webkit-box-shadow: inset 0 -2px #2475ab;
+  box-shadow: inset 0 -2px #2475ab;
+}
+.belize-hole-flat-button:active {
+  top: 1px;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+#sbtn-exit {
+    margin-top: 100px;
+    width: 80px;
+    height: 40px;
+    margin: auto;
+}

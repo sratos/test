@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>КРОК тесты</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="jquery.js" ></script>
+    <script type="text/javascript" src="core.js" ></script>
+</head>
+<body>
+<table id="start-table">
+    <tr>
+        <td colspan="2"><img src="logo.jpg"></td>
+    </tr>
+    <tr>
+        <td>Сценарий тестирования:</td>
+        <td><select id="test-list">
+        </select></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="centered"><button id="sbtn-begin" class="amethyst-flat-button">Начать</button></td>
+    </tr>
+</table>
+<table id="question-table">
+    <thead>
+    <tr>
+        <th>
+            <div class="block-stats">
+                <span>Правильно:</span><b class="right" id="score-correct">0</b>
+                <span>Ошибок:</span><b class="wrong" id="score-wrong">0</b>
+                <span>Подсмотрено:</span><b class="selected" id="score-forgot">0</b>
+                <div id="questions-count">100/260</div>
+            </div>
+        </th>
+    </tr>
+    <tr>
+        <th id="block-question"></th>
+    </tr>
+    </thead>
+    <tbody id="block-answers">
+    </tbody>
+    <tfoot>
+    <tr>
+        <td class="centered button-block">
+            <button class="sbtn-iforgot concrete-flat-button ">Я не помню</button>
+            <button class="sbtn-answer peter-river-flat-button " id="sbtn-answer">Ответить</button>
+            <div class="block-arrows">
+                <button id="sbtn-prev" class="arrow belize-hole-flat-button"><</button>
+                <button id="sbtn-next" class="arrow belize-hole-flat-button">></button>
+            </div>
+            <div class="block-arrows">
+                <button id="sbtn-exit" class="concrete-flat-button ">Выйти</button>
+            </div>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+<script>
+$( document ).ready(Test.Init);
+</script>
+</body>
+</html>
