@@ -6,6 +6,11 @@ window.Test = {
         window.resultStorage = {}
 
         $( window ).load(function() {
+
+            $(document).on('click', '#question-table .sbl-answer', function() {
+                $(this).toggleClass('selected-answer');
+            })
+
             fillTestList();
             $('#sbtn-begin').on('click', function() {
                 window.resultStorage = {
@@ -118,7 +123,7 @@ window.Test = {
             $('#block-answers').empty();
             shuffle(q.answers);
             for(var j=0; j < q.answers.length; j++) {
-                $('#block-answers').append('<tr><td class="sbl-answer"><input class="answer-checker" type="checkbox" correct="'+q.answers[j].correct+'" /><span><span>'+q.answers[j].name+'</span></td></tr>')
+                $('#block-answers').append('<tr><td class="sbl-answer" correct="'+q.answers[j].correct+'"><span>'+q.answers[j].name+'</span></td></tr>')
             }
         }
 

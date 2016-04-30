@@ -22,6 +22,11 @@ body {
     width: 100%;
 }
 
+.selected-answer {
+    background-color: #ffd582 !important;
+    border: 1px solid #e0a131 !important;
+}
+
 @media only screen and (min-width:600px){
     #question-table {
         margin:auto;
@@ -32,10 +37,12 @@ body {
 }
 
 #question-table .sbl-answer {
-    border: 2px solid #ddd;
+    border: 1px solid #ddd;
     height: 50px;
     line-height: 15px;
     background-color: #fff;
+    border-radius: 3px;
+    padding: 15px;
 }
 
 .centered {
@@ -82,8 +89,8 @@ input[@type="button"] {
 
 
 .block-arrows .arrow {
-    width: 100px;
-    height: 60px;
+    width: 70px;
+    height: 50px;
 }
 
 .block-stats {
