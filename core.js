@@ -1,9 +1,7 @@
 window.Test = {
     _currentQuestion: null,
     _base: [],
-    _questions: {correct: [], wrong: []},
     Init: function () {
-        window.resultStorage = {}
 
         $( window ).load(function() {
 
@@ -13,14 +11,6 @@ window.Test = {
 
             fillTestList();
             $('#sbtn-begin').on('click', function() {
-                window.resultStorage = {
-                    results: {
-                        'hinted': 0,
-                        'wrong': 0,
-                        'correct': 0
-                    },
-                    answers: []
-                }
                 loadTest();
                 $('#start-table').hide();
                 $('#question-table').show();
@@ -35,22 +25,22 @@ window.Test = {
           });
 
           $('#sbtn-answer').on('click', function() {
-                var answers = $('.answer-checker')
+                var isCorrect = true;
+                var answers = $('.sbl-answer');
                     answers.each(function(a) {
-                    if (($(this).is(':checked') && $(this).attr('correct') == 1) || (!$(this).is(':checked') && $(this).attr('correct') == 0)) {
-                    } else {
-                        wrongAnswer();
+                    if (($(this).hasClass('selected-answer') && $(this).attr('correct') == 0)
+                        || (!$(this).hasClass('selected-answer') && $(this).attr('correct') == 1)) {
+                        isCorrect = false;
                         return;
                     }
-                    correctAnswer();
-                })
+                });
+                isCorrect ? correctAnswer() : wrongAnswer();
           })
 
           $('#sbtn-next').on('click', next);
           $('#sbtn-prev').on('click', prev);
         });
 
-        window.resultStorage = {correct: 0, wrong: 0}
         questions = {correct: [], wrong: []}
 
 
@@ -74,12 +64,36 @@ window.Test = {
         function wrongAnswer () {
             Test._base[Test._currentQuestion].state = {isCorrectAnswer:0, answered: 1};
             updateScores();
+            visualize();
         }
 
         function correctAnswer () {
             Test._base[Test._currentQuestion].state = {isCorrectAnswer:1, answered: 1};
             updateScores();
+            visualize();
         }
+
+        function visualize() {
+            $('#control-bar').hide();
+            $('#next-bar').show();
+
+
+            var answers = $('.sbl-answer');
+                answers.each(function(a) {
+                if ($(this).attr('correct') == 1) {
+                    $(this).removeClass('selected-answer');
+                    $(this).addClass('correct-answer');
+                }
+            });
+
+        }
+
+        $('#next-bar').on('click', function() {
+
+            $('#next-bar').hide();
+            $('#control-bar').show();
+            next();
+        })
 
         function loadTest() {
             testId = $('#test-list').val();

@@ -73,6 +73,12 @@ body {
     border: 1px solid #e0a131 !important;
 }
 
+.correct-answer {
+    background-color: #19bd44 !important;
+    border: 1px solid #12ae3b !important;
+    color: #006513 !important;
+}
+
 #question-table .sbl-answer {
     border: 1px solid #ddd;
     height: 50px;
@@ -297,4 +303,13 @@ input[@type="button"] {
         width: 450px;
         height: 200px;
     }
+}
+
+
+#next-bar {
+    display: none;
+}
+
+#next-bar > button {
+    width:100%;
 }
