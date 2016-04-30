@@ -19,7 +19,16 @@ body {
     margin:auto;
     margin-top: 5px;
     display: none;
-    width: 600px;
+    width: 100%;
+}
+
+@media only screen and (min-width:600px){
+    #question-table {
+        margin:auto;
+        margin-top: 5px;
+        display: none;
+        width: 600px;
+    }
 }
 
 #question-table .sbl-answer {
