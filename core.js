@@ -81,6 +81,13 @@ window.Test = {
             emo.removeClass('emo-think');
             isRight ? emo.addClass('emo-right') : emo.addClass('emo-wrong');
 
+            if(isRight) {
+                $('body').append('<div id="rays"></div>');
+                $('body').addClass('correct-answer');
+            } else {
+                $('body').addClass('wrong-answer');
+            }
+
             var answers = $('.sbl-answer');
                 answers.each(function(a) {
                 if ($(this).attr('correct') == 1) {
@@ -91,8 +98,19 @@ window.Test = {
 
         }
 
-        $('#next-bar').on('click', function() {
+        $('#sbtn-iforgot').on('click', function () {
+            $('.sbl-answer').each(function(a) {
+                if ($(this).attr('correct') == 1) {
+                    $(this).append('<div class="emo emo-right emo-forgot"></div>');
+                    $(this).addClass('forgot-correct');
+                }
+            });
+        });
 
+        $('#next-bar').on('click', function() {
+            $('body').removeClass('correct-answer');
+            $('body').removeClass('wrong-answer');
+            $('#rays').remove();
             var emo = $('.emo');
             emo.removeClass('emo-right');
             emo.removeClass('emo-wrong');
@@ -100,7 +118,7 @@ window.Test = {
             $('#next-bar').hide();
             $('#control-bar').show();
             next();
-        })
+        });
 
         function loadTest() {
             testId = $('#test-list').val();
@@ -183,5 +201,7 @@ window.Test = {
         }
 
     }
-
 }
+
+
+
