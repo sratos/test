@@ -47,31 +47,47 @@ window.Test = {
         function updateScores() {
             var wrongAnswers = 0;
             var correctAnswers = 0;
+            var forgotAnswers = 0;
             for(var i in Test._base) {
                 if (!Test._base[i].state) {
-
                 }
-                else if (Test._base[i].state && Test._base[i].state.isCorrectAnswer == 1) {
+                else if (Test._base[i].state.isCorrectAnswer == 1) {
                     correctAnswers++;
-                } else if (Test._base[i].state && Test._base[i].state.isCorrectAnswer == 0) {
+                } else if (Test._base[i].state.isCorrectAnswer == -1) {
                     wrongAnswers++;
+                }
+
+                if (Test._base[i].state && Test._base[i].state.forgot == 1) {
+                    forgotAnswers++;
                 }
             }
             $('#score-correct').text(correctAnswers);
             $('#score-wrong').text(wrongAnswers);
+            $('#score-forgot').text(forgotAnswers);
+        }
+
+        function updateState(o) {
+            if(!Test._base[Test._currentQuestion].state) {
+                Test._base[Test._currentQuestion].state = {};
+            }
+            for(var i in o) {
+                Test._base[Test._currentQuestion].state[i] = o[i];
+            }
         }
 
         function wrongAnswer () {
-            Test._base[Test._currentQuestion].state = {isCorrectAnswer:0, answered: 1};
+            updateState({isCorrectAnswer:-1, answered: 1});
             updateScores();
             visualize(false);
         }
 
         function correctAnswer () {
-            Test._base[Test._currentQuestion].state = {isCorrectAnswer:1, answered: 1};
+            updateState({isCorrectAnswer:1, answered: 1});
             updateScores();
             visualize(true);
         }
+
+
 
         function visualize(isRight) {
             $('#control-bar').hide();
@@ -84,6 +100,7 @@ window.Test = {
             if(isRight) {
                 $('body').append('<div id="rays"></div>');
                 $('body').addClass('correct-answer');
+                $('#question-table').addClass('opacity-answers');
             } else {
                 $('body').addClass('wrong-answer');
             }
@@ -98,6 +115,8 @@ window.Test = {
 
         }
 
+
+
         $('#sbtn-iforgot').on('click', function () {
             $('.sbl-answer').each(function(a) {
                 if ($(this).attr('correct') == 1) {
@@ -105,9 +124,12 @@ window.Test = {
                     $(this).addClass('forgot-correct');
                 }
             });
+            updateState({forgot:1});
+            updateScores();
         });
 
         $('#next-bar').on('click', function() {
+            $('#question-table').removeClass('opacity-answers');
             $('body').removeClass('correct-answer');
             $('body').removeClass('wrong-answer');
             $('#rays').remove();
