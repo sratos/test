@@ -107,27 +107,11 @@ input[@type="button"] {
     height: 110px;
     font-size: 10pt;
     vertical-align: top;
-    display: inline-block;
-
+    display: block;
 }
 
 #block-answers {
     font-size: 10pt;
-}
-
-.wrong {
-    border: 2px solid #f00 !important;
-    background-color: #fdd !important;
-}
-
-.right {
-    border: 2px solid #0f0 !important;
-    background-color: #dfd !important;
-}
-
-.selected {
-    border: 2px solid #aa0 !important;
-    background-color: #ff3 !important;
 }
 
 .block-arrows {
@@ -142,13 +126,44 @@ input[@type="button"] {
 
 .block-stats {
     font-size: 9pt;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50px;
+}
+
+
+.block-stats > b{
+    display: block;
+    font-weight: bold;
+    font-size: 8pt;
+}
+
+#score-correct {
+    color: #0d0;
+}
+
+#score-wrong {
+    color: #d00;
+}
+
+#score-forgot {
+    color: #dd5;
+}
+
+
+.block-stats > .overall {
+    position: absolute;
+    top: 97px;
+    left:0;
+    right:0;
+    font-size: 8pt;
+    color: #555;
+    font-weight: bold;
 }
 
 
 .block-stats > b {
-    display: inline-block;
-    margin: 10px;
-    padding: 5px;
 }
 
 .sbtn-answer {
@@ -319,9 +334,11 @@ input[@type="button"] {
 .emo {
     background-image: url('emo.png');
     width: 75px;
-    height: 100px;
+    min-height: 100px;
     background-size: cover;
     display: inline-block;
+    float: left;
+    position: relative;
 }
 
 .emo-think {
