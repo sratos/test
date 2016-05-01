@@ -104,10 +104,14 @@ input[@type="button"] {
 }
 
 .top-block {
-    height: 110px;
     font-size: 10pt;
     vertical-align: top;
     display: block;
+}
+
+#block-question {
+    height: 110px;
+    overflow-y: hidden;
 }
 
 #block-answers {
