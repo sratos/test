@@ -103,7 +103,7 @@ input[@type="button"] {
     min-width: 150px;
 }
 
-#block-question {
+.top-block {
     height: 110px;
     font-size: 10pt;
     vertical-align: top;
@@ -126,15 +126,16 @@ input[@type="button"] {
 
 .block-stats {
     font-size: 9pt;
-    position: absolute;
     left: 0;
     right: 0;
     top: 50px;
+    background-color: #fff;
+    border: 1px solid #aaa;
+    border-top: 0;
 }
 
 
 .block-stats > b{
-    display: block;
     font-weight: bold;
     font-size: 8pt;
 }
@@ -153,12 +154,9 @@ input[@type="button"] {
 
 
 .block-stats > .overall {
-    position: absolute;
-    top: 97px;
-    left:0;
-    right:0;
     font-size: 8pt;
-    color: #555;
+    color: #fff;
+    background-color: #5af;
     font-weight: bold;
 }
 
@@ -311,7 +309,6 @@ input[@type="button"] {
 @media only screen and (min-width:600px){
     #question-table {
         margin:auto;
-        margin-top: 5px;
         display: none;
         width: 600px;
     }
