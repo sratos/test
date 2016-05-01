@@ -107,6 +107,7 @@ input[@type="button"] {
     font-size: 10pt;
     vertical-align: top;
     display: inline-block;
+
 }
 
 #block-answers {
@@ -336,8 +337,8 @@ input[@type="button"] {
 }
 
   .bubble {
+    width: 300px;
     position: relative;
-    width: 500px;
     height: 100px;
     padding: 0px;
     background: #ffffff;
