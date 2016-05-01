@@ -1,72 +1,30 @@
 window.Test = {
-    _currentQuestion: null,
-    _base: [],
-    Init: function () {
-
-        $( window ).load(function() {
-
-            $(document).on('click', '#question-table .sbl-answer', function() {
-                $(this).toggleClass('selected-answer');
-            })
-
-            fillTestList();
-            $('#sbtn-begin').on('click', function() {
-                loadTest();
-                $('#start-table').hide();
-                $('#question-table').show();
-            })
-
-          $('#sbtn-exit').on('click', function() {
-                if(window.confirm("Бросить тест и выйти?")) {
-                    $('#start-table').show();
-                    $('#question-table').hide();
-
-                }
-          });
-
-          $('#sbtn-answer').on('click', function() {
-                var isCorrect = true;
-                var answers = $('.sbl-answer');
-                    answers.each(function(a) {
-                    if (($(this).hasClass('selected-answer') && $(this).attr('correct') == 0)
-                        || (!$(this).hasClass('selected-answer') && $(this).attr('correct') == 1)) {
-                        isCorrect = false;
-                        return;
-                    }
-                });
-                isCorrect ? correctAnswer() : wrongAnswer();
-          })
-
-          $('#sbtn-next').on('click', next);
-          $('#sbtn-prev').on('click', prev);
-        });
-
-        questions = {correct: [], wrong: []}
-
-
-        function updateScores() {
-            var wrongAnswers = 0;
-            var correctAnswers = 0;
-            var forgotAnswers = 0;
-            for(var i in Test._base) {
-                if (!Test._base[i].state) {
-                }
-                else if (Test._base[i].state.isCorrectAnswer == 1) {
-                    correctAnswers++;
-                } else if (Test._base[i].state.isCorrectAnswer == -1) {
-                    wrongAnswers++;
-                }
-
-                if (Test._base[i].state && Test._base[i].state.forgot == 1) {
-                    forgotAnswers++;
-                }
+    list: [
+              ['_ЗАОЧ_КРОК1 Пробное тестирование - 2016', null],
+              ['_ЗАОЧ_КРОК1_Физ. химия (обучение)', 'fiz_himia'],
+              ['_ЗАОЧ_КРОК1_Фармакология (обучение)', 'farmakologia'],
+              ['_ЗАОЧ_КРОК1_Пат. физиология (обучение)', 'pat_fiziologia'],
+              ['_ЗАОЧ_КРОК1_Органич. химия (обучение)', 'organich_himia'],
+              ['_ЗАОЧ_КРОК1_Микробиология (обучение)', 'mikrobiologia'],
+              ['_ЗАОЧ_КРОК1_Ботаника (обучение)', 'botanika'],
+              ['_ЗАОЧ_КРОК1_Биохимия (обучение)', 'biohimia'],
+              ['_ЗАОЧ_КРОК1_Аналитич. химия (обучение)', 'analit_himia']
+          ],
+    answer: function() {
+        var isCorrect = true;
+        var answers = $('.sbl-answer');
+            answers.each(function(a) {
+            if (($(this).hasClass('selected-answer') && $(this).attr('correct') == 0)
+                || (!$(this).hasClass('selected-answer') && $(this).attr('correct') == 1)) {
+                isCorrect = false;
+                return;
             }
-            $('#score-correct').text(correctAnswers);
-            $('#score-wrong').text(wrongAnswers);
-            $('#score-forgot').text(forgotAnswers);
-        }
-
-        function updateState(o) {
+        });
+        Test.update({isCorrectAnswer: isCorrect ? 1 : -1, answered: 1});
+        Test.endQuestion(isCorrect);
+    },
+    update: function(o) {
+        if(o) {
             if(!Test._base[Test._currentQuestion].state) {
                 Test._base[Test._currentQuestion].state = {};
             }
@@ -74,28 +32,24 @@ window.Test = {
                 Test._base[Test._currentQuestion].state[i] = o[i];
             }
         }
+        var tbl = {wrong: 0, correct: 0, forgot: 0, na: 0, a: 0};
+        for(var i in Test._base) {
+            if (!Test._base[i].state) continue;
+            if (Test._base[i].state.isCorrectAnswer != null)tbl.a++;
 
-        function wrongAnswer () {
-            updateState({isCorrectAnswer:-1, answered: 1});
-            updateScores();
-            visualize(false);
+            if (Test._base[i].state && Test._base[i].state.forgot == 1) tbl.forgot++;
+            if (Test._base[i].state.isCorrectAnswer == 1)  tbl.correct++;
+            else if (Test._base[i].state.isCorrectAnswer == -1) tbl.wrong++;
         }
-
-        function correctAnswer () {
-            updateState({isCorrectAnswer:1, answered: 1});
-            updateScores();
-            visualize(true);
-        }
-
-
-
-        function visualize(isRight) {
+        $('#score-correct').text(tbl.correct);
+        $('#score-wrong').text(tbl.wrong);
+        $('#score-forgot').text(tbl.forgot);
+        $('#score-overall').text(tbl.a + '/' + Test._base.length);
+    },
+    endQuestion: function (isRight) {
             $('#control-bar').hide();
             $('#next-bar').show();
-            var emo = $('.emo');
-
-            emo.removeClass('emo-think');
-            isRight ? emo.addClass('emo-right') : emo.addClass('emo-wrong');
+            $('.emo').removeClass('emo-think').addClass(isRight ? 'emo-right' : 'emo-wrong');
 
             if(isRight) {
                 $('body').append('<div id="rays"></div>');
@@ -105,17 +59,51 @@ window.Test = {
                 $('body').addClass('wrong-answer');
             }
 
-            var answers = $('.sbl-answer');
-                answers.each(function(a) {
+            $('.sbl-answer').each(function(a) {
                 if ($(this).attr('correct') == 1) {
-                    $(this).removeClass('selected-answer');
                     $(this).addClass('correct-answer');
+                } else if ($(this).hasClass('selected-answer')) {
+                    $(this).addClass('wrong-answer');
                 }
+                $(this).removeClass('selected-answer');
             });
+        },
+    _currentQuestion: null,
+    _base: [],
+    Init: function () {
+        $(document).on('click', '#question-table .sbl-answer', function() {
+            $(this).toggleClass('selected-answer');
+        })
 
+        var options = '';
+        for(var i in Test.list) {
+            options += '<option value="'+i+'">'+Test.list[i][0]+'</option>'
         }
+        $('#test-list').append(options);
 
+        $('#sbtn-begin').on('click', function() {
+            testId = $('#test-list').val();
+            var data = window.questions[testId];
+            shuffle(data);
+            Test._base = data;
+            Test._currentQuestion = 0;
+            showQuestion();
+            $('#start-table').hide();
+            $('#question-table').show();
+            Test.update(null);
+        })
 
+        $('#sbtn-exit').on('click', function() {
+            if(window.confirm("Бросить тест и выйти?")) {
+                $('#start-table').show();
+                $('#question-table').hide();
+            }
+        });
+
+        $('#sbtn-next').on('click', {goNext: true}, move);
+        $('#sbtn-prev').on('click', {goNext: false}, move);
+
+        $('#sbtn-answer').on('click', Test.answer)
 
         $('#sbtn-iforgot').on('click', function () {
             $('.sbl-answer').each(function(a) {
@@ -124,32 +112,20 @@ window.Test = {
                     $(this).addClass('forgot-correct');
                 }
             });
-            updateState({forgot:1});
-            updateScores();
+            Test.update({forgot:1});
         });
 
         $('#next-bar').on('click', function() {
             $('#question-table').removeClass('opacity-answers');
-            $('body').removeClass('correct-answer');
-            $('body').removeClass('wrong-answer');
+            $('body').removeClass('correct-answer wrong-answer');
+            $('.emo').addClass('emo-think').removeClass('emo-right emo-wrong');
             $('#rays').remove();
-            var emo = $('.emo');
-            emo.removeClass('emo-right');
-            emo.removeClass('emo-wrong');
-            emo.addClass('emo-think');
+
+
             $('#next-bar').hide();
             $('#control-bar').show();
-            next();
+            move({data: {goNext: true}});
         });
-
-        function loadTest() {
-            testId = $('#test-list').val();
-            var data = window.questions[testId];
-            shuffle(data);
-            Test._base = data;
-            Test._currentQuestion = 0;
-            showQuestion();
-        }
 
         function shuffle(a) {
             var j, x, i;
@@ -161,21 +137,14 @@ window.Test = {
             }
         }
 
-        function next() {
-            Test._currentQuestion++;
-            showQuestion();
-        }
-
-        function prev() {
-            if(Test._currentQuestion > 0) {
-                Test._currentQuestion--;
-            }
+        function move(o) {
+            if (o.data.goNext) Test._currentQuestion++;
+            else if (Test._currentQuestion > 0) Test._currentQuestion--;
             showQuestion();
         }
 
         function getCurrentQuestion() {
-            var id = Test._currentQuestion;
-            return window.Test._base[id];
+            return window.Test._base[Test._currentQuestion];
         }
 
         function showQuestion() {
@@ -183,47 +152,22 @@ window.Test = {
             $('#block-question').text(q.name)
             $('#block-answers').empty();
             shuffle(q.answers);
-            for(var j=0; j < q.answers.length; j++) {
+            for (var j=0; j < q.answers.length; j++) {
                 $('#block-answers').append('<tr><td class="sbl-answer" correct="'+q.answers[j].correct+'"><span>'+q.answers[j].name+'</span></td></tr>')
             }
         }
 
-        window.testJson = [
-            ['_ЗАОЧ_КРОК1 Пробное тестирование - 2016', null],
-            ['_ЗАОЧ_КРОК1_Физ. химия (обучение)', 'fiz_himia'],
-            ['_ЗАОЧ_КРОК1_Фармакология (обучение)', 'farmakologia'],
-            ['_ЗАОЧ_КРОК1_Пат. физиология (обучение)', 'pat_fiziologia'],
-            ['_ЗАОЧ_КРОК1_Органич. химия (обучение)', 'organich_himia'],
-            ['_ЗАОЧ_КРОК1_Микробиология (обучение)', 'mikrobiologia'],
-            ['_ЗАОЧ_КРОК1_Ботаника (обучение)', 'botanika'],
-            ['_ЗАОЧ_КРОК1_Биохимия (обучение)', 'biohimia'],
-            ['_ЗАОЧ_КРОК1_Аналитич. химия (обучение)', 'analit_himia']
-        ]
-
         window.questions = []
+
+        for(var i in Test.list) {
+            if (Test.list[i][1] == null) continue;
+            fetchJson(Test.list[i][1] + ".json", i)
+        }
 
         function fetchJson(name, iter) {
             $.getJSON(name, function( data ) {
                 window.questions[iter] = data;
             });
         }
-
-
-        for(var i in window.testJson) {
-            if(window.testJson[i][1] == null) continue;
-            fetchJson(window.testJson[i][1] + ".json", i)
-        }
-
-        function fillTestList() {
-            var options = ''
-            for(var i in window.testJson) {
-                options += '<option value="'+i+'">'+window.testJson[i][0]+'</option>'
-            }
-            $('#test-list').append(options)
-        }
-
     }
 }
-
-
-

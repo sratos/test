@@ -79,6 +79,11 @@ body {
     color: #006513 !important;
 }
 
+.wrong-answer {
+    background-color: #ff5f5b !important;
+    color: #810001 !important;
+}
+
 #question-table .sbl-answer {
     border: 1px solid #ddd;
     height: 50px;
@@ -118,7 +123,7 @@ input[@type="button"] {
 }
 
 .opacity-answers {
-    opacity: 0.7;
+    opacity: 0.9;
 }
 
 .block-arrows {
