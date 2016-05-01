@@ -105,7 +105,8 @@ input[@type="button"] {
 #block-question {
     height: 110px;
     font-size: 10pt;
-    vertical-align: center;
+    vertical-align: top;
+    display: inline-block;
 }
 
 #block-answers {
@@ -312,4 +313,62 @@ input[@type="button"] {
 
 #next-bar > button {
     width:100%;
+}
+
+.emo {
+    background-image: url('emo.png');
+    width: 75px;
+    height: 100px;
+    background-size: cover;
+    display: inline-block;
+}
+
+.emo-think {
+    background-position-x: 0;
+}
+
+.emo-wrong {
+    background-position-x: 75px;
+}
+
+.emo-right {
+    background-position-x: 150px;
+}
+
+  .bubble {
+    position: relative;
+    width: 500px;
+    height: 100px;
+    padding: 0px;
+    background: #ffffff;
+    border: #000000 solid 2px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+  .bubble:after {
+    content: "";
+    position: absolute;
+    top: 30px;
+    left: -18px;
+    border-style: solid;
+    border-width: 12px 18px 12px 0;
+    border-color: transparent #ffffff;
+    display: block;
+    width: 0;
+    z-index: 1;
+}
+
+  .bubble:before {
+    content: "";
+    position: absolute;
+    top: 29px;
+    left: -21px;
+    border-style: solid;
+    border-width: 13px 19px 13px 0;
+    border-color: transparent #000000;
+    display: block;
+    width: 0;
+    z-index: 0;
 }

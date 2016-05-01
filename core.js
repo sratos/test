@@ -64,19 +64,22 @@ window.Test = {
         function wrongAnswer () {
             Test._base[Test._currentQuestion].state = {isCorrectAnswer:0, answered: 1};
             updateScores();
-            visualize();
+            visualize(false);
         }
 
         function correctAnswer () {
             Test._base[Test._currentQuestion].state = {isCorrectAnswer:1, answered: 1};
             updateScores();
-            visualize();
+            visualize(true);
         }
 
-        function visualize() {
+        function visualize(isRight) {
             $('#control-bar').hide();
             $('#next-bar').show();
+            var emo = $('.emo');
 
+            emo.removeClass('emo-think');
+            isRight ? emo.addClass('emo-right') : emo.addClass('emo-wrong');
 
             var answers = $('.sbl-answer');
                 answers.each(function(a) {
@@ -90,6 +93,10 @@ window.Test = {
 
         $('#next-bar').on('click', function() {
 
+            var emo = $('.emo');
+            emo.removeClass('emo-right');
+            emo.removeClass('emo-wrong');
+            emo.addClass('emo-think');
             $('#next-bar').hide();
             $('#control-bar').show();
             next();
