@@ -103,6 +103,9 @@ window.Test = {
 
         $('#results-table').append(questionsHtml);
 
+        $('#results-score-correct').text($('#score-correct').text());
+        $('#results-score-wrong').text($('#score-wrong').text());
+        $('#results-score-forgot').text($('#score-forgot').text());
     },
     endQuestion: function (isRight) {
             Test.answered.push(window.Test._base[Test._currentQuestion]);
@@ -187,10 +190,11 @@ window.Test = {
             Test.update(null);
         })
 
-        $('#sbtn-exit').on('click', function() {
+        $('.sbtn-exit').on('click', function() {
             if(window.confirm("Бросить тест и выйти?")) {
                 $('#start-table').show();
                 $('#question-table').hide();
+                $('#results-table').hide();
             }
         });
 

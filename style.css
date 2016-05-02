@@ -313,7 +313,7 @@ input[@type="button"] {
   box-shadow: none;
 }
 
-#sbtn-exit {
+.sbtn-exit {
     margin-top: 100px;
     width: 80px;
     height: 40px;
@@ -491,4 +491,12 @@ body.wrong-answer {
 
 .wrong {
     color: #810001 !important;
+}
+
+.forgot {
+    color: #dd5 !important;
+}
+
+.result-stats {
+    width: 150px;
 }

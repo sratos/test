@@ -13,13 +13,22 @@
         <td>
             <div id="result-emo" class="emo one-row"></div>
             <div class="one-row score-percent">100%</div>
-            <div class="one-row">
-                <div>100</div>
-                <div>100</div>
-                <div>100</div>
+            <div class="one-row result-stats">
+                <div>
+                    <span>Правильно: </span>
+                    <span id="results-score-correct" class="correct">0</span>
+                </div>
+                <div>
+                    <span>Ошибок: </span>
+                    <span id="results-score-wrong" class="wrong">0</span>
+                </div>
+                <div>
+                    <span>Подсмотрено: </span>
+                    <span id="results-score-forgot" class="forgot">0</span>
+                </div>
             </div>
             <div class="one-row">
-                <button class="concrete-flat-button">Выйти</button>
+                <button class="concrete-flat-button sbtn-exit">Выйти</button>
             </div>
         </td>
     </tr>
@@ -32,8 +41,8 @@
         <td>
             <p>Сценарий тестирования</p>
             <br>
-            <select id="test-list">
-        </select></td>
+            <select id="test-list"></select>
+        </td>
     </tr>
     <tr>
         <td class="centered"><button id="sbtn-begin" class="amethyst-flat-button">Начать</button></td>
@@ -66,7 +75,7 @@
     <tr>
         <td class="centered button-block" id="control-bar">
             <button class="concrete-flat-button " id="sbtn-iforgot">Я не помню</button>
-            <button id="sbtn-exit" class="concrete-flat-button">Выйти</button>
+            <button class="concrete-flat-button sbtn-exit">Выйти</button>
             <button class="sbtn-answer turquoise-flat-button" id="sbtn-answer">Ответить</button>
             <div class="block-arrows">
                 <button id="sbtn-prev" class="arrow belize-hole-flat-button"><</button>
