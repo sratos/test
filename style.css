@@ -69,6 +69,14 @@ body {
     table-layout: fixed;
 }
 
+#results-table {
+    margin:auto;
+    margin-top: 5px;
+    display: none;
+    width: 100%;
+    table-layout: fixed;
+}
+
 .selected-answer {
     background-color: #ffd582 !important;
     border: 1px solid #e0a131 !important;
@@ -116,6 +124,11 @@ input[@type="button"] {
 #block-question {
     height: 110px;
     overflow-y: scroll;
+    margin: 10px 0;
+}
+
+#main-emo {
+    margin: 10px 0;
 }
 
 #block-answers {
@@ -321,10 +334,13 @@ input[@type="button"] {
 @media only screen and (min-width:600px){
     #question-table {
         margin:auto;
-        display: none;
         width: 600px;
     }
 
+    #results-table {
+        margin:auto;
+        width: 600px;
+    }
     .logo {
         width: 450px;
         height: 200px;
@@ -445,4 +461,34 @@ body.correct-answer {
 body.wrong-answer {
     transition: all 1s ease;
     background-color: #faa;
+}
+
+.question-result {
+    border-top: 10px solid #F6FBFF;
+}
+
+.correct-result {
+    background-color: #afa;
+}
+
+.wrong-result {
+    background-color: #faa;
+}
+
+.one-row {
+    float: left;
+    vertical-align: middle;
+}
+
+.score-percent {
+    font-size: 55pt;
+    margin: 0 20px;
+}
+
+.correct {
+    color: #006513 !important;
+}
+
+.wrong {
+    color: #810001 !important;
 }
