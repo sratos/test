@@ -82,7 +82,6 @@ window.Test = {
                 correctQuestionsCount++;
         }
 
-        console.log(correctQuestionsCount);
         var questionsCount = Test.answered.length;
         resultPercent = Math.floor((correctQuestionsCount/questionsCount)*100);
 
@@ -108,8 +107,8 @@ window.Test = {
         $('#results-score-forgot').text($('#score-forgot').text());
     },
     endQuestion: function (isRight) {
-            Test.answered.push(window.Test._base[Test._currentQuestion]);
-            window.Test._base.splice(Test._currentQuestion, 1);
+            Test.answered.push(Test._base[Test._currentQuestion]);
+            Test._base.splice(Test._currentQuestion, 1);
             Test.update(null);
 
             $('#control-bar').hide();
@@ -139,14 +138,14 @@ window.Test = {
             }
 
             if (Test._currentQuestion < 1)
-                Test._currentQuestion = window.Test._base.length - 1;
-            else if (Test._currentQuestion > window.Test._base.length - 1)
+                Test._currentQuestion = Test._base.length - 1;
+            else if (Test._currentQuestion > Test._base.length - 1)
                 Test._currentQuestion = 0;
-            if (window.Test._base.length <= 0) {
+            if (Test._base.length <= 0) {
                 Test.endTest();
                 return;
             }
-            var q = window.Test._base[Test._currentQuestion];
+            var q = Test._base[Test._currentQuestion];
             $('#block-question').text(q.name)
             $('#block-answers').empty();
             shuffle(q.answers);
@@ -157,6 +156,12 @@ window.Test = {
     _currentQuestion: null,
     _base: [],
     Init: function () {
+
+        Test.questions = [];
+        Test.answered = [];
+        Test._currentQuestion = 0;
+        Test._base = [];
+
         $(document).on('click', '#question-table .sbl-answer', function() {
             $(this).toggleClass('selected-answer');
         })
@@ -173,7 +178,7 @@ window.Test = {
             if (testId == 0) {
                 for (var i=1; i < Test.questions.length; i++) {
                     shuffle(Test.questions[i]);
-                    var q = Test.questions[i].splice(0,5); //20
+                    var q = Test.questions[i].splice(0,1); //20
                     for(var j in q) {
                         data.push(q[j]);
                     }
@@ -192,6 +197,7 @@ window.Test = {
 
         $('.sbtn-exit').on('click', function() {
             if(window.confirm("Бросить тест и выйти?")) {
+                Test.Init();
                 $('#start-table').show();
                 $('#question-table').hide();
                 $('#results-table').hide();
@@ -200,7 +206,6 @@ window.Test = {
 
         $('#sbtn-next').on('click', {goNext: true}, Test.move);
         $('#sbtn-prev').on('click', {goNext: false}, Test.move);
-
         $('#sbtn-answer').on('click', Test.answer)
 
         $('#sbtn-iforgot').on('click', function () {
@@ -222,8 +227,6 @@ window.Test = {
             $('#control-bar').show();
             Test.move(null);
         });
-
-        Test.questions = [];
 
         for(var i in Test.list) {
             if (Test.list[i][1] == null) continue;
