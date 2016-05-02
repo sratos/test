@@ -464,7 +464,7 @@ body.wrong-answer {
 }
 
 .question-result {
-    border-top: 10px solid #F6FBFF;
+    border-top: 25px solid #F6FBFF;
 }
 
 .correct-result {
@@ -499,4 +499,18 @@ body.wrong-answer {
 
 .result-stats {
     width: 150px;
+}
+
+.result-question {
+    display: block;
+    background-color: #F6FBFF;
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 10px;
+}
+
+.question-result > div {
+    padding: 5px;
+    min-height: 25px;
+    line-height: 25px;
+    border-bottom: 1px solid #888;
 }

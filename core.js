@@ -75,8 +75,8 @@ window.Test = {
             for(var j in Test.answered[i].answers) {
                 answersHtml += '<div class="'+( Test.answered[i].answers[j].correct == 1 ? 'correct-answer' : '')+'">' + Test.answered[i].answers[j].name + '</div>';
             }
-            questionsHtml += '<tr><td class="question-result ' + (Test.answered[i].state.isCorrectAnswer == 1 ? 'correct-result' : 'wrong-result')+'"><b>'
-            questionsHtml += Test.answered[i].name +  '<b>'+answersHtml+'</td></tr>';
+            questionsHtml += '<tr><td class="question-result ' + (Test.answered[i].state.isCorrectAnswer == 1 ? 'correct-result' : 'wrong-result')+'"><b class="result-question">'
+            questionsHtml += Test.answered[i].name +  '</b>'+answersHtml+'</td></tr>';
 
             if (Test.answered[i].state.isCorrectAnswer == 1)
                 correctQuestionsCount++;
@@ -173,7 +173,7 @@ window.Test = {
             if (testId == 0) {
                 for (var i=1; i < Test.questions.length; i++) {
                     shuffle(Test.questions[i]);
-                    var q = Test.questions[i].splice(0,1); //20
+                    var q = Test.questions[i].splice(0,5); //20
                     for(var j in q) {
                         data.push(q[j]);
                     }
