@@ -46,7 +46,7 @@ table {
 body {
     margin: 0;
     padding: 0;
-    background-color: #F6FBFF;
+    background-color: #fff;
     font-family: 'Helvetica', 'Arial', sans-serif;
     font-weight: normal;
 }
@@ -464,7 +464,7 @@ body.wrong-answer {
 }
 
 .question-result {
-    border-top: 25px solid #F6FBFF;
+    border-top: 25px solid #fff;
 }
 
 .correct-result {
@@ -503,7 +503,7 @@ body.wrong-answer {
 
 .result-question {
     display: block;
-    background-color: #F6FBFF;
+    background-color: #fff;
     border-bottom: 1px solid #aaa;
     padding-bottom: 10px;
 }
