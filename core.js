@@ -8,10 +8,16 @@ function shuffle(a) {
     }
 }
 
-function Test() {
+function Test(q) {
     var th1s = this;
+    this.selectedQuestions = 25;
     this.answered = [];
     this.questions = [];
+    this._currentQuestion = null;
+    this._base = [];
+    this.questions = q;
+    this.answered = [];
+
     this.answer = function() {
         var isCorrect = true;
         var answers = $('.sbl-answer');
@@ -61,15 +67,21 @@ function Test() {
         var questionsHtml = '';
         var correctQuestionsCount = 0;
         for(var i in th1s.answered) {
-            var answersHtml = '';
+            var ansHtml = '';
             for(var j in th1s.answered[i].answers) {
-                answersHtml += '<div class="'+( th1s.answered[i].answers[j].correct == 1 ? 'correct-answer' : '')+'">' + th1s.answered[i].answers[j].name + '</div>';
+                ansHtml += '<div class="' + (th1s.answered[i].answers[j].correct == 1 ? 'correct-answer' : '') + '">';
+                ansHtml += th1s.answered[i].answers[j].name + '</div>';
             }
-            questionsHtml += '<tr><td class="question-result ' + (th1s.answered[i].state.isCorrectAnswer == 1 ? 'correct-result' : 'wrong-result')+'"><b class="result-question">'
-            questionsHtml += th1s.answered[i].name +  '</b>'+answersHtml+'</td></tr>';
-
-            if (th1s.answered[i].state.isCorrectAnswer == 1)
+            var clType = '';
+            if (th1s.answered[i].state.isCorrectAnswer == 1) {
                 correctQuestionsCount++;
+                clType = 'correct';
+            } else {
+                clType = 'wrong';
+            }
+
+            questionsHtml += '<tr><td class="question-result ' + clType + '-result">';
+            questionsHtml += '<b class="result-question">' + th1s.answered[i].name + '</b>' + ansHtml + '</td></tr>';
         }
 
         var questionsCount = th1s.answered.length;
@@ -77,18 +89,13 @@ function Test() {
 
         $('.score-percent').text(resultPercent + '%');
 
+        var fullSuccess = (resultPercent >= 60);
+
         $('#result-emo').removeClass('emo-think');
-        if(resultPercent >= 60) {
-            $('.score-percent').removeClass('wrong');
-            $('.score-percent').addClass('correct');
-            $('#result-emo').removeClass('emo-wrong');
-            $('#result-emo').addClass('emo-right');
-        } else {
-            $('.score-percent').removeClass('correct');
-            $('.score-percent').addClass('wrong');
-            $('#result-emo').removeClass('emo-right');
-            $('#result-emo').addClass('emo-wrong');
-        }
+        $('.score-percent').removeClass(fullSuccess ? 'wrong' : 'correct');
+        $('.score-percent').addClass(fullSuccess ? 'correct' : 'wrong');
+        $('#result-emo').removeClass(fullSuccess ? 'emo-wrong' : 'emo-right');
+        $('#result-emo').addClass(fullSuccess ? 'emo-right' : 'emo-wrong');
 
         $('#results-table').append(questionsHtml);
 
@@ -139,78 +146,34 @@ function Test() {
             $('#block-question').text(q.name)
             $('#block-answers').empty();
             shuffle(q.answers);
+            var ansHtml = '';
             for (var j=0; j < q.answers.length; j++) {
-                $('#block-answers').append('<tr><td class="sbl-answer" correct="'+q.answers[j].correct+'"><span>'+q.answers[j].name+'</span></td></tr>')
+                ansHtml += '<tr><td class="sbl-answer" correct="' + q.answers[j].correct + '">';
+                ansHtml += '<span>' + q.answers[j].name + '</span></td></tr>';
             }
+            $('#block-answers').append(ansHtml);
         };
-    this._currentQuestion = null;
-    this._base = [];
 
-        this.startTest = function() {
-            testId = $('#test-list').val();
-            var data = [];
-            if (testId == 0) {
-                for (var i=1; i < th1s.questions.length; i++) {
-                    shuffle(th1s.questions[i]);
-                    var q = th1s.questions[i].splice(0,1); //20
-                    for(var j in q) {
-                        data.push(q[j]);
-                    }
+    this.startTest = function() {
+        testId = $('#test-list').val();
+        var data = [];
+        if (testId == 0) {
+            for (var i=1; i < th1s.questions.length; i++) {
+                shuffle(th1s.questions[i]);
+                var q = th1s.questions[i].splice(0,th1s.selectedQuestions);
+                for(var j in q) {
+                    data.push(q[j]);
                 }
-            } else {
-                data = th1s.questions[testId];
             }
-            shuffle(data);
-            th1s._base = data;
-            th1s._currentQuestion = 0;
-            th1s.move(null);
-            $('#start-table').hide();
-            $('#question-table').show();
-            th1s.update(null);
-        };
-
-    this.Init = function (q) {
-
-        th1s.questions = q;
-        th1s.answered = [];
+        } else {
+            data = th1s.questions[testId];
+        }
+        shuffle(data);
+        th1s._base = data;
         th1s._currentQuestion = 0;
-        th1s._base = [];
-
-        $(document).on('click', '#question-table .sbl-answer', function() {
-            $(this).toggleClass('selected-answer');
-        })
-
-        $('.sbtn-exit').on('click', function() {
-            if(window.confirm("Бросить тест и выйти?")) {
-                $('#start-table').show();
-                $('#question-table').hide();
-                $('#results-table').hide();
-            }
-        });
-
-        $('#sbtn-next').on('click', {goNext: true}, th1s.move);
-        $('#sbtn-prev').on('click', {goNext: false}, th1s.move);
-        $('#sbtn-answer').on('click', th1s.answer)
-
-        $('#sbtn-iforgot').on('click', function () {
-            $('.sbl-answer').each(function(a) {
-                if ($(this).attr('correct') == 1) {
-                    $(this).append('<div class="emo emo-right emo-forgot"></div>');
-                    $(this).addClass('forgot-correct');
-                }
-            });
-            th1s.update({forgot:1});
-        });
-
-        $('#next-bar').on('click', function() {
-            $('#question-table').removeClass('opacity-answers');
-            $('body').removeClass('correct-answer wrong-answer');
-            $('.emo').addClass('emo-think').removeClass('emo-right emo-wrong');
-            $('#rays').remove();
-            $('#next-bar').hide();
-            $('#control-bar').show();
-            th1s.move(null);
-        });
-
+        th1s.move(null);
+        $('#start-table').hide();
+        $('#question-table').show();
+        th1s.update(null);
     };
 }

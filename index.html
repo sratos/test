@@ -93,6 +93,43 @@
 <script>
     $( window ).load(function() {
 
+        $(document).on('click', '#question-table .sbl-answer', function() {
+            $(this).toggleClass('selected-answer');
+        })
+
+        $('.sbtn-exit').on('click', function() {
+            if(window.confirm("Бросить тест и выйти?")) {
+                $('#start-table').show();
+                $('#question-table').hide();
+                $('#results-table').hide();
+            }
+        });
+
+        $('#next-bar').on('click', function() {
+            $('#question-table').removeClass('opacity-answers');
+            $('body').removeClass('correct-answer wrong-answer');
+            $('.emo').addClass('emo-think').removeClass('emo-right emo-wrong');
+            $('#rays').remove();
+            $('#next-bar').hide();
+            $('#control-bar').show();
+            window.test.move(null);
+        });
+
+
+        $('#sbtn-next').on('click', {goNext: true}, function() {window.test.move();});
+        $('#sbtn-prev').on('click', {goNext: false}, function() {window.test.move();});
+        $('#sbtn-answer').on('click', function() {window.test.answer();})
+
+        $('#sbtn-iforgot').on('click', function () {
+            $('.sbl-answer').each(function(a) {
+                if ($(this).attr('correct') == 1) {
+                    $(this).append('<div class="emo emo-right emo-forgot"></div>');
+                    $(this).addClass('forgot-correct');
+                }
+            });
+            window.test.update({forgot:1});
+        });
+
         var testList = [
               ['_ЗАОЧ_КРОК1 Пробное тестирование - 2016', null],
               ['_ЗАОЧ_КРОК1_Физ. химия (обучение)', 'fiz_himia'],
@@ -120,9 +157,8 @@
         $('#test-list').append(options);
 
         $('#sbtn-begin').on('click', function () {
-            var t = new Test();
-            t.Init(jsons);
-            t.startTest();
+            window.test = new Test(jsons);
+            window.test.startTest();
         });
     });
 </script>
