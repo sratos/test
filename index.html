@@ -8,12 +8,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
 
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <link href="icon114px.png" sizes="114x114" rel="apple-touch-icon-precomposed">
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link href="img/icon114px.png" sizes="114x114" rel="apple-touch-icon-precomposed">
+    <link rel="stylesheet" href="css/style.css">
 
-    <script type="text/javascript" src="jquery-2.2.3.min.js" ></script>
-    <script type="text/javascript" src="core.js" ></script>
+    <script type="text/javascript" src="js/jquery-2.2.3.min.js" ></script>
+    <script type="text/javascript" src="js/core.js" ></script>
 </head>
 <body>
 <table id="results-table">
@@ -31,7 +31,7 @@
                     <span id="results-score-wrong" class="wrong">0</span>
                 </div>
                 <div>
-                    <span>Подсмотрено: </span>
+                    <span>Подсказок: </span>
                     <span id="results-score-forgot" class="forgot">0</span>
                 </div>
             </div>
@@ -43,7 +43,9 @@
 </table>
 <table id="start-table">
     <tr>
-        <td><div class="logo"></div></td>
+        <td>
+            <div class="logo"></div>
+        </td>
     </tr>
     <tr>
         <td>
@@ -53,7 +55,9 @@
         </td>
     </tr>
     <tr>
-        <td class="centered"><button id="sbtn-begin" class="amethyst-flat-button">Начать</button></td>
+        <td class="centered">
+            <button id="sbtn-begin" class="amethyst-flat-button">Начать</button>
+        </td>
     </tr>
 </table>
 <table id="question-table">
@@ -63,11 +67,11 @@
             <div class="emo" id="main-emo"></div>
             <div class="top-block">
                 <div class="block-stats">
-                    <b>Верно:</b>
+                    <b>Правильно: </b>
                     <b id="score-correct">0</b>
-                    <b>Ошибок:</b>
+                    <b>Ошибок: </b>
                     <b id="score-wrong">0</b>
-                    <b>Подсказок:</b>
+                    <b>Подсказок: </b>
                     <b id="score-forgot">0</b>
                     <b class="overall" id="score-overall">0/0</b>
                 </div>
@@ -95,77 +99,6 @@
     </tr>
     </tfoot>
 </table>
-<script>
-    $( window ).load(function() {
-
-        $(document).on('click', '#question-table .sbl-answer', function() {
-            $(this).toggleClass('selected-answer');
-        })
-
-        $('.sbtn-exit').on('click', function() {
-            if(window.confirm("Бросить тест и выйти?")) {
-                $('#start-table').show();
-                $('#question-table').hide();
-                $('#results-table').hide();
-            }
-        });
-
-        $('#next-bar').on('click', function() {
-            $('#question-table').removeClass('opacity-answers');
-            $('body').removeClass('correct-answer wrong-answer');
-            $('.emo').addClass('emo-think').removeClass('emo-right emo-wrong');
-            $('#rays').remove();
-            $('#next-bar').hide();
-            $('#control-bar').show();
-            window.test.move(null);
-        });
-
-
-        $('#sbtn-next').on('click', function() {window.test.move({data: {goNext: true}});});
-        $('#sbtn-prev').on('click', function() {window.test.move({data: {goNext: false}});});
-        $('#sbtn-answer').on('click', function() {window.test.answer();})
-
-        $('#sbtn-iforgot').on('click', function () {
-            $('.sbl-answer').each(function(a) {
-                if ($(this).attr('correct') == 1) {
-                    $(this).append('<div class="emo emo-right emo-forgot"></div>');
-                    $(this).addClass('forgot-correct');
-                }
-            });
-            window.test.update({forgot:1});
-        });
-
-        var testList = [
-              ['Пробное тестирование - 2016', null],
-              ['Физ. химия (обучение)', 'fiz_himia'],
-              ['Фармакология (обучение)', 'farmakologia'],
-              ['Пат. физиология (обучение)', 'pat_fiziologia'],
-              ['Органич. химия (обучение)', 'organich_himia'],
-              ['Микробиология (обучение)', 'mikrobiologia'],
-              ['Ботаника (обучение)', 'botanika'],
-              ['Биохимия (обучение)', 'biohimia'],
-              ['Аналитич. химия (обучение)', 'analit_himia']];
-
-        var jsons = [];
-
-        function fetchJson(name, iter) {
-            $.getJSON(name, function( data ) {
-                jsons[iter] = data;
-            });
-        }
-
-        var options = '';
-        for(var i in testList) {
-            options += '<option value="'+i+'">'+testList[i][0]+'</option>';
-            if (testList[i][1] != null) fetchJson(testList[i][1] + ".json", i);
-        }
-        $('#test-list').append(options);
-
-        $('#sbtn-begin').on('click', function () {
-            window.test = new Test(JSON.parse(JSON.stringify(jsons)));
-            window.test.startTest();
-        });
-    });
-</script>
+<script type="text/javascript" src="js/page.js" ></script>
 </body>
 </html>

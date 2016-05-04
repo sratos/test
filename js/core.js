@@ -1,20 +1,20 @@
-function shuffle(a) {
-    var j, x, i;
-    for (i = a.length; i; i -= 1) {
-        j = Math.floor(Math.random() * i);
-        x = a[i - 1];
-        a[i - 1] = a[j];
-        a[j] = x;
-    }
-}
-
 function Test(q) {
     var th1s = this;
     this.selectedQuestions = 25;
     this.answered = [];
     this.questions = q;
-    this._currentQuestion = null;
-    this._base = [];
+    this.questionNumber = null;
+    this.base = [];
+
+    var shuffle = function(a) {
+        var j, x, i;
+        for (i = a.length; i; i -= 1) {
+            j = Math.floor(Math.random() * i);
+            x = a[i - 1];
+            a[i - 1] = a[j];
+            a[j] = x;
+        }
+    }
 
     this.answer = function() {
         var isCorrect = true;
@@ -31,33 +31,32 @@ function Test(q) {
     };
     this.update = function(o) {
         if(o) {
-            if(!th1s._base[th1s._currentQuestion].state) {
-                th1s._base[th1s._currentQuestion].state = {};
+            if(!th1s.base[th1s.questionNumber].state) {
+                th1s.base[th1s.questionNumber].state = {};
             }
             for(var i in o) {
-                th1s._base[th1s._currentQuestion].state[i] = o[i];
+                th1s.base[th1s.questionNumber].state[i] = o[i];
             }
         }
         var tbl = {wrong: 0, correct: 0, forgot: 0, na: 0, a: 0};
         for(var i in th1s.answered) {
-            if (th1s.answered[i].state.isCorrectAnswer != null)tbl.a++;
-
+            if (th1s.answered[i].state.isCorrectAnswer != null) tbl.a++;
             if (th1s.answered[i].state && th1s.answered[i].state.forgot == 1) tbl.forgot++;
             if (th1s.answered[i].state.isCorrectAnswer == 1)  tbl.correct++;
             else if (th1s.answered[i].state.isCorrectAnswer == -1) tbl.wrong++;
         }
-        for(var i in th1s._base) {
-            if (!th1s._base[i].state) continue;
-            if (th1s._base[i].state.isCorrectAnswer != null)tbl.a++;
+        for(var i in th1s.base) {
+            if (!th1s.base[i].state) continue;
+            if (th1s.base[i].state.isCorrectAnswer != null)tbl.a++;
 
-            if (th1s._base[i].state && th1s._base[i].state.forgot == 1) tbl.forgot++;
-            if (th1s._base[i].state.isCorrectAnswer == 1)  tbl.correct++;
-            else if (th1s._base[i].state.isCorrectAnswer == -1) tbl.wrong++;
+            if (th1s.base[i].state && th1s.base[i].state.forgot == 1) tbl.forgot++;
+            if (th1s.base[i].state.isCorrectAnswer == 1)  tbl.correct++;
+            else if (th1s.base[i].state.isCorrectAnswer == -1) tbl.wrong++;
         }
         $('#score-correct').text(tbl.correct);
         $('#score-wrong').text(tbl.wrong);
         $('#score-forgot').text(tbl.forgot);
-        $('#score-overall').text(th1s.answered.length + '/' + (th1s._base.length + th1s.answered.length));
+        $('#score-overall').text(th1s.answered.length + '/' + (th1s.base.length + th1s.answered.length));
     };
     this.endTest = function() {
         $('#question-table').hide();
@@ -101,56 +100,58 @@ function Test(q) {
         $('#results-score-wrong').text($('#score-wrong').text());
         $('#results-score-forgot').text($('#score-forgot').text());
     };
+
     this.endQuestion = function (isRight) {
-            th1s.answered.push(th1s._base[th1s._currentQuestion]);
-            th1s._base.splice(th1s._currentQuestion, 1);
-            th1s.update(null);
+        th1s.answered.push(th1s.base[th1s.questionNumber]);
+        th1s.base.splice(th1s.questionNumber, 1);
+        th1s.update(null);
 
-            $('#control-bar').hide();
-            $('#next-bar').show();
-            $('.emo').removeClass('emo-think').addClass(isRight ? 'emo-right' : 'emo-wrong');
+        $('#control-bar').hide();
+        $('#next-bar').show();
+        $('.emo').removeClass('emo-think').addClass(isRight ? 'emo-right' : 'emo-wrong');
 
-            if(isRight) {
-                $('body').append('<div id="rays"></div>');
-                $('body').addClass('correct-answer');
-                $('#question-table').addClass('opacity-answers');
-            } else {
-                $('body').addClass('wrong-answer');
-            }
+        if(isRight) {
+            $('body').append('<div id="rays"></div>');
+            $('body').addClass('correct-answer');
+            $('#question-table').addClass('opacity-answers');
+        } else {
+            $('body').addClass('wrong-answer');
+        }
 
-            $('.sbl-answer').each(function(a) {
-                if ($(this).attr('correct') == 1) {
-                    $(this).addClass('correct-answer');
-                } else if ($(this).hasClass('selected-answer')) {
-                    $(this).addClass('wrong-answer');
-                }
-                $(this).removeClass('selected-answer');
-            });
-        };
-        this.move = function (o) {
-            if (o != null) {
-                o.data.goNext ? th1s._currentQuestion++ : th1s._currentQuestion--;
+        $('.sbl-answer').each(function(a) {
+            if ($(this).attr('correct') == 1) {
+                $(this).addClass('correct-answer');
+            } else if ($(this).hasClass('selected-answer')) {
+                $(this).addClass('wrong-answer');
             }
+            $(this).removeClass('selected-answer');
+        });
+    };
 
-            if (th1s._currentQuestion < 1)
-                th1s._currentQuestion = th1s._base.length - 1;
-            else if (th1s._currentQuestion > th1s._base.length - 1)
-                th1s._currentQuestion = 0;
-            if (th1s._base.length <= 0) {
-                th1s.endTest();
-                return;
-            }
-            var q = th1s._base[th1s._currentQuestion];
-            $('#block-question').text(q.name)
-            $('#block-answers').empty();
-            shuffle(q.answers);
-            var ansHtml = '';
-            for (var j=0; j < q.answers.length; j++) {
-                ansHtml += '<tr><td class="sbl-answer" correct="' + q.answers[j].correct + '">';
-                ansHtml += '<span>' + q.answers[j].name + '</span></td></tr>';
-            }
-            $('#block-answers').append(ansHtml);
-        };
+    this.move = function (o) {
+        if (o != null) {
+            o.data.goNext ? th1s.questionNumber++ : th1s.questionNumber--;
+        }
+
+        if (th1s.questionNumber < 1)
+            th1s.questionNumber = th1s.base.length - 1;
+        else if (th1s.questionNumber > th1s.base.length - 1)
+            th1s.questionNumber = 0;
+        if (th1s.base.length <= 0) {
+            th1s.endTest();
+            return;
+        }
+        var q = th1s.base[th1s.questionNumber];
+        $('#block-question').text(q.name)
+        $('#block-answers').empty();
+        shuffle(q.answers);
+        var ansHtml = '';
+        for (var j = 0; j < q.answers.length; j++) {
+            ansHtml += '<tr><td class="sbl-answer" correct="' + q.answers[j].correct + '">';
+            ansHtml += '<span>' + q.answers[j].name + '</span></td></tr>';
+        }
+        $('#block-answers').append(ansHtml);
+    };
 
     this.startTest = function() {
         testId = $('#test-list').val();
@@ -167,8 +168,8 @@ function Test(q) {
             data = th1s.questions[testId];
         }
         shuffle(data);
-        th1s._base = data;
-        th1s._currentQuestion = 0;
+        th1s.base = data;
+        th1s.questionNumber = 0;
         th1s.move(null);
         $('#start-table').hide();
         $('#question-table').show();
