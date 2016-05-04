@@ -1,16 +1,18 @@
 <html>
 <head>
     <title>КРОК тесты</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="КРОК тесты">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
+
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="icon114px.png" sizes="114x114" rel="apple-touch-icon-precomposed">
-
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="jquery.js" ></script>
+
+    <script type="text/javascript" src="jquery-2.2.3.min.js" ></script>
     <script type="text/javascript" src="core.js" ></script>
 </head>
 <body>
@@ -45,7 +47,7 @@
     </tr>
     <tr>
         <td>
-            <p>Сценарий тестирования</p>
+            <p>Выберите тест:</p>
             <br>
             <select id="test-list"></select>
         </td>
@@ -58,8 +60,7 @@
     <thead>
     <tr>
         <th>
-            <div class="emo" id="main-emo">
-            </div>
+            <div class="emo" id="main-emo"></div>
             <div class="top-block">
                 <div class="block-stats">
                     <b>Верно:</b>
@@ -75,8 +76,7 @@
         </th>
     </tr>
     </thead>
-    <tbody id="block-answers">
-    </tbody>
+    <tbody id="block-answers"></tbody>
     <tfoot>
     <tr>
         <td class="centered button-block" id="control-bar">
@@ -87,8 +87,7 @@
                 <button id="sbtn-prev" class="arrow belize-hole-flat-button"><</button>
                 <button id="sbtn-next" class="arrow belize-hole-flat-button">></button>
             </div>
-            <div class="block-arrows">
-            </div>
+            <div class="block-arrows"></div>
         </td>
         <td class="centered button-block" id="next-bar">
             <button class="sbtn-answer turquoise-flat-button">Дальше</button>
@@ -122,8 +121,8 @@
         });
 
 
-        $('#sbtn-next').on('click', {goNext: true}, function() {window.test.move();});
-        $('#sbtn-prev').on('click', {goNext: false}, function() {window.test.move();});
+        $('#sbtn-next').on('click', function() {window.test.move({data: {goNext: true}});});
+        $('#sbtn-prev').on('click', function() {window.test.move({data: {goNext: false}});});
         $('#sbtn-answer').on('click', function() {window.test.answer();})
 
         $('#sbtn-iforgot').on('click', function () {
@@ -137,15 +136,15 @@
         });
 
         var testList = [
-              ['_ЗАОЧ_КРОК1 Пробное тестирование - 2016', null],
-              ['_ЗАОЧ_КРОК1_Физ. химия (обучение)', 'fiz_himia'],
-              ['_ЗАОЧ_КРОК1_Фармакология (обучение)', 'farmakologia'],
-              ['_ЗАОЧ_КРОК1_Пат. физиология (обучение)', 'pat_fiziologia'],
-              ['_ЗАОЧ_КРОК1_Органич. химия (обучение)', 'organich_himia'],
-              ['_ЗАОЧ_КРОК1_Микробиология (обучение)', 'mikrobiologia'],
-              ['_ЗАОЧ_КРОК1_Ботаника (обучение)', 'botanika'],
-              ['_ЗАОЧ_КРОК1_Биохимия (обучение)', 'biohimia'],
-              ['_ЗАОЧ_КРОК1_Аналитич. химия (обучение)', 'analit_himia']];
+              ['Пробное тестирование - 2016', null],
+              ['Физ. химия (обучение)', 'fiz_himia'],
+              ['Фармакология (обучение)', 'farmakologia'],
+              ['Пат. физиология (обучение)', 'pat_fiziologia'],
+              ['Органич. химия (обучение)', 'organich_himia'],
+              ['Микробиология (обучение)', 'mikrobiologia'],
+              ['Ботаника (обучение)', 'botanika'],
+              ['Биохимия (обучение)', 'biohimia'],
+              ['Аналитич. химия (обучение)', 'analit_himia']];
 
         var jsons = [];
 
@@ -163,7 +162,7 @@
         $('#test-list').append(options);
 
         $('#sbtn-begin').on('click', function () {
-            window.test = new Test(jsons);
+            window.test = new Test(JSON.parse(JSON.stringify(jsons)));
             window.test.startTest();
         });
     });

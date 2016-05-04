@@ -12,11 +12,9 @@ function Test(q) {
     var th1s = this;
     this.selectedQuestions = 25;
     this.answered = [];
-    this.questions = [];
+    this.questions = q;
     this._currentQuestion = null;
     this._base = [];
-    this.questions = q;
-    this.answered = [];
 
     this.answer = function() {
         var isCorrect = true;
