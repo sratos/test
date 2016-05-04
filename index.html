@@ -91,7 +91,40 @@
     </tfoot>
 </table>
 <script>
-    $( window ).load(Test.Init);
+    $( window ).load(function() {
+
+        var testList = [
+              ['_ЗАОЧ_КРОК1 Пробное тестирование - 2016', null],
+              ['_ЗАОЧ_КРОК1_Физ. химия (обучение)', 'fiz_himia'],
+              ['_ЗАОЧ_КРОК1_Фармакология (обучение)', 'farmakologia'],
+              ['_ЗАОЧ_КРОК1_Пат. физиология (обучение)', 'pat_fiziologia'],
+              ['_ЗАОЧ_КРОК1_Органич. химия (обучение)', 'organich_himia'],
+              ['_ЗАОЧ_КРОК1_Микробиология (обучение)', 'mikrobiologia'],
+              ['_ЗАОЧ_КРОК1_Ботаника (обучение)', 'botanika'],
+              ['_ЗАОЧ_КРОК1_Биохимия (обучение)', 'biohimia'],
+              ['_ЗАОЧ_КРОК1_Аналитич. химия (обучение)', 'analit_himia']];
+
+        var jsons = [];
+
+        function fetchJson(name, iter) {
+            $.getJSON(name, function( data ) {
+                jsons[iter] = data;
+            });
+        }
+
+        var options = '';
+        for(var i in testList) {
+            options += '<option value="'+i+'">'+testList[i][0]+'</option>';
+            if (testList[i][1] != null) fetchJson(testList[i][1] + ".json", i);
+        }
+        $('#test-list').append(options);
+
+        $('#sbtn-begin').on('click', function () {
+            var t = new Test();
+            t.Init(jsons);
+            t.startTest();
+        });
+    });
 </script>
 </body>
 </html>
